@@ -5,13 +5,13 @@ typedef struct TreeNode {
     struct TreeNode* child;
     struct TreeNode* parent;
     struct TreeNode* sibling;
-} InlineTreeNode;
+} inline_tree_node;
 
 typedef struct {
-    InlineTreeNode entry;
+    inline_tree_node entry;
 } InlineTree;
 
-void insert_tree_node_as_child(InlineTreeNode* parent,InlineTreeNode* data);
+void insert_tree_node_as_child(inline_tree_node* parent,inline_tree_node* data);
 
 #endif
 

@@ -3,7 +3,7 @@ BASE_DIR=${PWD}
 CFLAGS := -O2 -Wall -Werror -I${PWD}/include
 OBJS := $(patsubst %c,%c.o,$(SRCS))
 LIBS :=
-SUBDIRS := driver
+SUBDIRS := driver common lexical
 RECURSIVE_MAKE= @for subdir in $(SUBDIRS); \
         do \
         ( cd $$subdir && $(MAKE) all -f Makefile -e CC="${CC}" -e BASE_DIR=${BASE_DIR} -e CFLAGS='${CFLAGS}') || exit 1; \

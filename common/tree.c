@@ -1,9 +1,9 @@
 #include <common/tree.h>
 //Child-brother Architecture.
-void insert_tree_node_as_child(InlineTreeNode* parent,InlineTreeNode* data)
+void insert_tree_node_as_child(inline_tree_node* parent,inline_tree_node* data)
 {
     if(parent->child) {
-        InlineTreeNode* child = parent->child;
+        inline_tree_node* child = parent->child;
         while(child->sibling) {
             child = child->sibling;
         }

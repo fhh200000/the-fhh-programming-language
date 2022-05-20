@@ -17,5 +17,6 @@ fhhc_status driver_entry(const char* input_file, const char* output_file,const c
         fclose(input);
         return STATUS_ERROR;
     }
+
     return STATUS_SUCCESS;
 }
