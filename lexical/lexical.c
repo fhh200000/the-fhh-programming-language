@@ -1,16 +1,20 @@
 #include <lexical/lexical.h>
 #include <common/automata.h>
+#include <stdlib.h>
+#include <string.h>
+#include <stdio.h>
 transrule rules[] = {
 
 };
-char* lexical_entry(char* input_data, token_structure* buffer)
+const U8* lexical_entry(const U8* input_data, U64 maximum_length, token_structure* buffer)
 {
-    char* pos = input_data;
-    dfastatus status = 0;
-    while(status!=REJECTED) {
-        for(int i=0;i<sizeof(rules)/sizeof(transrule);i++) {
-
-        }
-    }
-    return pos;
+#if 1
+    //For debug only.
+    static char buf[200];
+    int len=maximum_length>200?200:maximum_length;
+    memcpy(buf,input_data,len);
+    buf[len]='\0';
+    printf("Token:%s\n",buf);
+#endif
+    return input_data+len;
 }

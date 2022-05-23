@@ -21,14 +21,15 @@ typedef enum {
 } token_type;
 typedef struct {
     token_type type;
-    U8 value[0];
+    U8* begin;
+    U64 length;
 } token_structure;
 /*
     Main token processor.
-    Returns: Next position as char*.
+    Returns: Next position as U8*.
     Parameters:
-    1.Input data as char*.
+    1.Input data as U8*.
     2.token buffer as token_structure*.
  */
-char* lexical_entry(char* input_data, token_structure* buffer);
+const U8* lexical_entry(const U8* input_data, U64 maximum_length, token_structure* buffer);
 #endif
