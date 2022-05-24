@@ -6,9 +6,19 @@ typedef U64 dfastatus;
 #define REJECTED 0xFFFFFFFFFFFFFFFF
 typedef struct {
     U64 curr;
-    U8 input;
+    struct {
+        enum {
+            VALUE_RAW,
+            VALUE_CATEGORY
+        } type;
+        U8 value;
+    } input;
     U64 next;
 } transrule;
+typedef enum {
+    CATEGORY_CHARACTER,
+    CATEGORY_DIGIT
+} value_categories;
 dfastatus naive_dfa(transrule* instruct,int rulelength,int inputlength,char* in);
 
 #endif
