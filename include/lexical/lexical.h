@@ -2,8 +2,9 @@
 #define LEXICAL_H
 #include <common.h>
 #include <common/tree.h>
+#include <common/automata.h>
 typedef struct {
-    token_type type;
+    transrule type;
     U8* begin;
     U64 length;
 } token_structure;
