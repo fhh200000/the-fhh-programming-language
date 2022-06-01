@@ -4,8 +4,8 @@
 #include <common/tree.h>
 #include <common/automata.h>
 typedef struct {
-    transrule type;
-    U8* begin;
+    tokens type;
+    const char* begin;
     U64 length;
 } token_structure;
 /*
@@ -15,5 +15,5 @@ typedef struct {
     1.Input data as U8*.
     2.token buffer as token_structure*.
  */
-const U8* lexical_entry(const U8* input_data, U64 maximum_length, token_structure* buffer);
+const char* lexical_entry(const char* input_data, U64 maximum_length, token_structure* buffer);
 #endif

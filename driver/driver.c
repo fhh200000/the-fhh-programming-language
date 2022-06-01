@@ -20,7 +20,7 @@ fhhc_status driver_entry(const char* input_file, const char* output_file,const c
     }
     fseek(input, 0, SEEK_END);
     U64 input_length = ftell(input);
-    U8* input_buffer = malloc(input_length+1);
+    char* input_buffer = malloc(input_length+1);
     fseek(input,0,SEEK_SET);
     fread(input_buffer,input_length,1,input);
     input_buffer[input_length]='\0';

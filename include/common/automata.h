@@ -65,6 +65,6 @@ typedef enum {
     TOKEN_STRING=80,
     TOKEN_CHARACTER=82
 } tokens;
-dfastatus naive_dfa(transrule* rule, U64 rule_length, U64* hint_table,const char* input, U64 max_length);
+dfastatus naive_dfa(transrule* rule, U64 rule_length, U64* hint_table,const char* input, U64 max_length,const char** next_position);
 
 #endif
