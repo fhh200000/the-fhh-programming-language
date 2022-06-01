@@ -61,6 +61,5 @@ dfastatus naive_dfa(transrule* rule, U64 rule_length, U64* hint_table,const char
     if(next_position!=nullptr) {
         *next_position = last_accepted_position;
     }
-    printf("End:%lld\n",last_accepted_status);
     return last_accepted_status;
 }
