@@ -6,8 +6,10 @@ dfastatus naive_dfa(transrule* rule, U64 rule_length, U64* hint_table,const char
     const char* end       = input+max_length;
     transrule*  end_trans = rule+rule_length;
     dfastatus current_status = 0;
+    char skip='\0';
     dfastatus last_accepted_status = 0;
     const char* last_accepted_position = pointer;
+main_loop:
     while(pointer!=end) {
         U64 off = hint_table[current_status];
         transrule* current_rule = &rule[off];
@@ -18,10 +20,8 @@ dfastatus naive_dfa(transrule* rule, U64 rule_length, U64* hint_table,const char
                 switch(current_rule->input.value) {
                     case CATEGORY_CHARACTER: {
                         if((*pointer>='a'&&*pointer<='z')||(*pointer>='A'&&*pointer<='Z')) {
-                            printf("Success\n");
                             goto check_success;
                         }
-                        printf("Fail\n");
                         break;
                     }
                     case CATEGORY_ANY: {
@@ -36,7 +36,7 @@ dfastatus naive_dfa(transrule* rule, U64 rule_length, U64* hint_table,const char
                 }
             }
             else {
-                if(current_rule->input.value==*pointer) {
+                if(current_rule->input.value==*pointer&&(current_rule->input.value!=skip)) {
                     goto check_success;
                 }
             }
@@ -53,13 +53,20 @@ dfastatus naive_dfa(transrule* rule, U64 rule_length, U64* hint_table,const char
             current_status&=(~ACCEPTED);
             last_accepted_status = current_status;
             last_accepted_position = pointer+1;
-
+            skip='\0';
         }
         pointer++;
         continue;
     }
     if(next_position!=nullptr) {
         *next_position = last_accepted_position;
+    }
+    //HACK:USE GUESSED STATUS 0!
+    if(last_accepted_status==0) {
+        skip = *last_accepted_position;
+        current_status = last_accepted_status;
+        pointer = last_accepted_position;
+        goto main_loop;
     }
     return last_accepted_status;
 }

@@ -1,6 +1,6 @@
 SRCS := $(wildcard *.c)
 BASE_DIR=${PWD}
-CFLAGS := -O2 -Wall -Werror -I${PWD}/include
+CFLAGS := -O2 -Wall -Werror -I${PWD}/include -g
 OBJS := $(patsubst %c,%c.o,$(SRCS))
 LIBS :=
 SUBDIRS := driver common lexical grammar
