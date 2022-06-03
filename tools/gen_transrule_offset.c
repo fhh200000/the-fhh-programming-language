@@ -1,17 +1,7 @@
-#include <lexical/lexicaltable.h>
-U64 lexicaltable_hint[] = {
-   0,  33,  37,  41,  45,  47,  51,  55,    //0~7
-  59,  61,  65,  69,  71,  75,  80,  84,    //8~15
-  86,  91,  95,  99, 103, 105, 109, 113,    //16~23
- 117, 121, 125, 129, 133,   0, 135, 136,    //24~31
- 137,   0, 138,   0,   0, 139,   0,   0,    //32~39
- 140,   0,   0, 141, 142,   0,   0,   0,    //40~47
-   0, 143, 144,   0,   0,   0,   0,   0,    //48~55
-   0,   0,   0,   0, 145, 149, 151, 155,    //56~63
- 159, 163, 167, 171, 175, 179, 183, 185,    //64~71
- 189, 193, 197, 201,   0, 205, 206, 208,    //72~79
-   0, 210                                   //80~81
-};
+#include <common/automata.h>
+#include <malloc.h>
+
+//Place transrule here.
 transrule lexicaltable[] = {
     {0,{VALUE_RAW,'b'},1},
     {0,{VALUE_RAW,'c'},5},
@@ -225,4 +215,30 @@ transrule lexicaltable[] = {
     {79,{VALUE_CATEGORY,CATEGORY_ANY},79},
     {81,{VALUE_RAW,'\''},TOKEN_CHARACTER|ACCEPTED},
 };
+#define MAX_STATUS_COUNT 82
+//------Above---------
+
+
+int main(void)
+{
+    U64* count = calloc(sizeof(U64)*MAX_STATUS_COUNT,1);
+    for(U64 i=0;i<sizeof(lexicaltable)/sizeof(transrule);i++) {
+        if(!count[lexicaltable[i].curr]) {
+            count[lexicaltable[i].curr]=i;
+        }
+    }
+    for(U64 i=0;i<MAX_STATUS_COUNT;i++) {
+        printf("%4lld,",count[i]);
+        if(!((i+1)%8)) {
+            printf("    //%lld~%lld\n",i-7,i);
+        }
+    }
+    printf("\n");
+
+    free(count);
+}
+
+
+
+
 

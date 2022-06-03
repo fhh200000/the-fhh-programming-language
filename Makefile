@@ -1,6 +1,6 @@
 SRCS := $(wildcard *.c)
 BASE_DIR=${PWD}
-CFLAGS := -O2 -Wall -Werror -I${PWD}/include -g
+CFLAGS := -Wall -Werror -I${PWD}/include -g
 OBJS := $(patsubst %c,%c.o,$(SRCS))
 LIBS :=
 SUBDIRS := driver common lexical grammar
@@ -22,3 +22,6 @@ link:
 clean:
 	@echo -e "\e[33;1m[CLEAN]\e[0m\t" ALL
 	@rm -rf build/*
+tool:
+	@echo -e "\e[32;1m[CC]\e[0m\t" gen_transrule_offset.c
+	@$(CC) ${CFLAGS} tools/gen_transrule_offset.c -o build/gen_transrule_offset

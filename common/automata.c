@@ -6,16 +6,12 @@ dfastatus naive_dfa(transrule* rule, U64 rule_length, U64* hint_table,const char
     const char* end       = input+max_length;
     transrule*  end_trans = rule+rule_length;
     dfastatus current_status = 0;
-    char skip='\0';
     dfastatus last_accepted_status = 0;
     const char* last_accepted_position = pointer;
-main_loop:
     while(pointer!=end) {
-        U64 off = hint_table[current_status];
+        U64 off = hint_table[current_status&(~ACCEPTED)];
         transrule* current_rule = &rule[off];
-        printf("Check %c\n",*pointer);
-        while(current_rule!=end_trans&&current_rule->curr==current_status) {
-            printf("curr:%lld,input type %d,value %c,next %lld\n",current_rule->curr,current_rule->input.type,current_rule->input.value,current_rule->next);
+        while(current_rule!=end_trans&&current_rule->curr==(current_status&(~ACCEPTED))) {
             if(current_rule->input.type==VALUE_CATEGORY) {
                 switch(current_rule->input.value) {
                     case CATEGORY_CHARACTER: {
@@ -33,40 +29,45 @@ main_loop:
                         }
                         break;
                     }
+                    case CATEGORY_END_INPUT: {
+                        break;
+                    }
                 }
             }
             else {
-                if(current_rule->input.value==*pointer&&(current_rule->input.value!=skip)) {
+                if(current_rule->input.value==*pointer) {
                     goto check_success;
                 }
             }
             current_rule++;
         }
-        printf("Failed\n");
-        if(next_position!=nullptr) {
-            *next_position = last_accepted_position;
-        }
-        return last_accepted_status;
+    goto fail_target;
     check_success:
         current_status = current_rule->next;
         if(current_rule->next&ACCEPTED) {
-            current_status&=(~ACCEPTED);
             last_accepted_status = current_status;
             last_accepted_position = pointer+1;
-            skip='\0';
         }
         pointer++;
         continue;
     }
+    //At the end of our input, we give the failed target another chance.
+fail_target:;
+    transrule* current_rule = &rule[hint_table[current_status&(~ACCEPTED)]];
+    while(current_rule!=end_trans&&current_rule->curr==(current_status&(~ACCEPTED)))
+    {
+        if(current_rule->input.type==VALUE_CATEGORY&&current_rule->input.value==CATEGORY_END_INPUT) {
+            current_status = current_rule->next;
+            if(current_rule->next&ACCEPTED) {
+                last_accepted_status = current_status;
+                last_accepted_position = pointer;
+            }
+            break;
+        }
+        current_rule++;
+    }
     if(next_position!=nullptr) {
         *next_position = last_accepted_position;
     }
-    //HACK:USE GUESSED STATUS 0!
-    if(last_accepted_status==0) {
-        skip = *last_accepted_position;
-        current_status = last_accepted_status;
-        pointer = last_accepted_position;
-        goto main_loop;
-    }
-    return last_accepted_status;
+    return last_accepted_status&(~ACCEPTED);
 }

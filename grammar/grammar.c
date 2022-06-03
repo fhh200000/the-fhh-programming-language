@@ -20,7 +20,7 @@ fhhc_status grammar_entry(const char* input_buffer, U64 input_length, FILE* outp
             p_begin = lexical_entry(p_begin,p-p_begin,&token);
             memcpy(buf,token.begin,token.length);
             buf[token.length]='\0';
-            printf("Token %s \t type %d  length %lld\n",buf,token.type,token.length);
+            printf("Token %s \t type %d length %lld\n",buf,token.type,token.length);
         }
     }
     return STATUS_SUCCESS;

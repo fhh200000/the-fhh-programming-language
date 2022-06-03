@@ -19,6 +19,7 @@ typedef enum {
     CATEGORY_CHARACTER,
     CATEGORY_DIGIT,
     CATEGORY_ANY,
+    CATEGORY_END_INPUT
 } value_categories;
 typedef enum {
     TOKEN_BYTE=4,
